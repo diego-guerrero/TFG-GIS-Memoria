@@ -1,0 +1,143 @@
+\section{Tecnologías}
+\label{sec:tecnologias}
+
+Se recogen en esta sección las principales tecnologías empleadas para la construcción de \textit{VSCode4Teaching}, dividiéndolas en sendas subsecciones para cada uno de los componentes (al respecto de los componentes, su estructura y sus interrelaciones, véase la \referenciaSeccion{sec:diseñoArquitectura}), e introduciendo, además, información acerca de la persistencia de la información y de las tecnologías involucradas en el despliegue de la aplicación.
+
+\subsection{Persistencia de la información}
+Con el fin de almacenar todos los registros para cada una de las entidades del modelo de dominio ---que queda reflejado en la \referenciaSeccion{subsec:arqDominio}---, el servidor hace uso de una base de datos.
+Desde el inicio del proyecto, \textit{VSCode4Teaching} ha hecho uso de un sistema gestor de base de datos (SGBD) de tipo relacional, que son aquellos que basan la persistencia de datos en su colocación de tablas que almacenan información estructurada en forma de tuplas (registros) con unos atributos (columnas) comunes a todas.
+
+Específicamente, el SGBD empleado es \textbf{MySQL} \cite{Tec_MySQL}, de Oracle Corporation. Este sistema de tipo relacional es divulgado con licencia pública general de GNU (GPL) en su versión \textit{Community Server}. MySQL es uno de los SGBD más empleados y populares en la actualidad, siendo utilizado por multitud de productos y/o servicios digitales empleados cotidianamente. Este hecho viene ratificado por la \textit{Encuesta de Desarrolladores} realizada por Stack Overflow en 2021 \cite{Tec_Encuesta_StackOverflow}, que confirma en su sección \textit{Most popular technologies: databases} que MySQL es el SGBD más empleado, ya que más del $50 \%$ de los $73\ 317$ encuestados afirman utilizarlo, seguido de cerca por opciones también extendidas como PostgreSQL.
+
+\subsection{Servidor}
+\label{subsec:tecServidor}
+Esta subsección introduce las tecnologías empleadas para la construcción del servidor que actúa como \textit{backend} de la aplicación, ocupándose principalmente de las tareas de emisión y recepción de información desde y hacia los clientes y de su interpretación para su almacenamiento en el sistema de persistencia de datos.
+
+Con este fin, se hace uso de un componente implementado sobre \textbf{Spring Boot} (basado en el \textit{framework}\footnote{\textit{Framework}. Entorno o marco de trabajo que aglutina una serie de conceptos, prácticas y estándares para facilitar la consecución de un objetivo, como la creación de aplicaciones.} \textbf{Spring}) en lenguaje \textbf{Java}, empleando módulos y dependencias ---gestionadas mediante \textbf{Maven}--- como \textbf{Spring Data}, que hace uso del ORM\footnote{ORM. Siglas de ``mapeador objeto-relacional'' (del inglés \textit{Object-Relational Mapper}). Es una capa de abstracción \textit{software} que permite interactuar con las relaciones, tuplas y atributos de una base de datos a través de los elementos básicos de la orientación a objetos: clases, interfaces, propiedades y métodos.} \textbf{Hibernate} para la gestión de la información en base de datos. Quedan desarrolladas a continuación las tecnologías introducidas anteriormente.
+
+\subsubsection{Java}
+Java es ``una plataforma informática de lenguaje de programación creada por Sun Microsystems en 1995'' \cite{Tec_Java}, aunque desde  2010 pertenece a Oracle Corporation tras la integración de Sun Microsystems como filial de la matriz Oracle.
+
+Se puede aseverar que la plataforma Java se basa en la interacción entre tres grandes componentes: el lenguaje Java, el entorno en tiempo de ejecución y el conjunto de las bibliotecas que se proporcionan por defecto.
+
+El lenguaje Java es uno de los más empleados en la industria del \textit{software} (el tercero en noviembre de 2022 según TIOBE \cite{TIOBE}, con una cuota de uso del 11,98\%). Se enmarca dentro del paradigma de la programación orientada a objetos, ya que brinda mecanismos que le permiten verificar sus siete características esenciales ---abstracción, encapsulación, jerarquía, modularización, tipado, concurrencia y persistencia---, entre los que destaca el uso de un tipado fuerte y el soporte a la genericidad, la herencia o el polimorfismo, entre otros.
+
+La plataforma Java dispone, además, de un entorno en tiempo de ejecución, llamado \textit{Java Runtime Environment} (JRE), que es el responsable de la ejecución del código implementado en Java en el computador, gestionando la creación de objetos y la memoria empleada. Este hecho proporciona a Java una de sus principales características: la independencia del sistema operativo o de la plataforma \textit{hardware}. Para ello, hace uso de la máquina virtual de Java, la \textit{Java Virtual Machine} (JVM), que viene incorporada dentro de JRE. Para poder utilizar este entorno de ejecución, Java hace uso de \textit{bytecode}, que es un paso intermedio en la compilación del código que se genera a partir del código fuente y que se convierte a código máquina en el momento en que es utilizado por el entorno de ejecución mediante un compilador JIT (\textit{just in time}), de modo que el lenguaje Java es considerado tanto un lenguaje compilado (ya que se genera el \textit{bytecode} a partir del código fuente, y este es igual en todos los casos) y, además, interpretado (ya que el \textit{bytecode} es procesado por un intérprete en tiempo real durante su ejecución).
+
+Además, la interfaz que Java provee para la utilización de recursos destaca por la ingente cantidad de bibliotecas que introduce, proporcionando una capa de acceso unificado a todo tipo de recursos propios del dispositivo, tales como: la interfaz de red y comunicaciones, el soporte a la concurrencia de procesos ligeros o la gestión de la interfaz gráfica de las aplicaciones, entre muchas otras utilidades.
+
+\subsubsection{Maven}
+Maven es un ``\textit{software} de gestión de proyectos y una herramienta basada en el concepto de un modelo de objetos de proyecto (\textit{Project Object Model} o POM) que permite manejar la construcción de proyectos y la generación de informes y documentación a partir de ese fragmento central de información'' \cite{Tec_Maven}.
+
+Maven es un proyecto construido y mantenido por la \textit{Apache Software Foundation} y se divulga de forma abierta bajo licencia Apache. Tal como se introduce en su descripción, Maven es un gestor de dependencias que permite centralizar en un único archivo, el POM (habitualmente \texttt{pom.xml}) en la raíz del proyecto, la declaración de todas las dependencias JAR\footnote{JAR. Acrónimo de \textit{Java ARchive}.} y de todos los \textit{plugins}\footnote{\textit{Plugin}. Es una extensión añadida a un producto informático para aumentar sus capacidades o funcionalidad.} habilitados para su ejecución.
+
+En el \referenciaCodigo{cod:fragmentoPOM} se puede observar un fragmento del fichero POM del servidor de \textit{VSCode4Teaching}. En él se intoducen cuestiones relativas al propio proyecto, tales como el nombre del grupo y del artefacto creados o la versión en que se encuentra; así como datos sobre las dependencias empleadas ---en este caso, declarando que el proyecto se basa en Spring Boot como dependencia principal---. A continuación, quedarán declaradas todas las dependencias, las propiedades y los distintos \textit{plugins} disponibles para ejecutar sobre el proyecto.
+
+\begin{lstlisting}[language=XML,caption={Fragmento del POM del servidor.},label=cod:fragmentoPOM]
+<project [...]>
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.7.5</version>
+    <relativePath/>
+</parent>
+<groupId>com.vscode4teaching</groupId>
+<artifactId>vscode4teaching-server</artifactId>
+<version>2.2.1</version>
+<name>VSCode 4 Teaching</name>
+<description>Server side of VSCode4Teaching extension.</description>
+<properties>
+    <java.version>11</java.version>
+</properties>
+<dependencies>
+[...]
+\end{lstlisting}
+
+\subsubsection{Spring y Spring Boot}
+\label{subsec:spring}
+Spring es el \textit{framework} de creación de aplicaciones web basadas en Java más extendido en la industria en la actualidad. Este hecho viene respaldado por la \textit{Encuesta de Desarrolladores} de Stack Overflow \cite{Tec_Encuesta_StackOverflow}, que recoge en su edición de 2021 que, de las $67\ 593$ respuestas de la pregunta \textit{Most popular techonologies: web frameworks}, el $14,56\%$ contestaron que utilizaban Spring por encima de otros, si bien cabe reseñar que ostenta la décima posición en la clasificación general. 
+
+Tal como se describe en su documentación, Spring ``hace que la programación en Java sea más rápida, fácil y segura para todo el mundo [...], poniendo el foco en la velocidad, simplicidad y productividad, convirtiéndolo en el \textit{framework} Java más popular del mundo'' \cite{Tec_Spring}. En la actualidad es filial de la matriz VMWare.
+
+Spring se caracteriza por su modularidad, introduciendo una enorme cantidad de módulos asociados que se pueden utilizar para diversos fines, tales como el trabajo con bases de datos (\textit{Spring Data}), gestión de la seguridad informática (\textit{Spring Security}) o gestión de envío de mensajes (\textit{Spring Integration} o \textit{Web Socket}\footnote{\textit{Web Socket}. Es una tecnología que permite a dos componentes informáticos enviarse mensajes de forma bidireccional a través del protocolo de comunicaciones TCP.}), entre muchos otros.
+
+Spring Boot, en particular, es un proyecto que permite ``facilitar la creación de aplicaciones basadas en Spring preparadas para producción que pueden ejecutarse de forma simple'' \cite{Tec_SpringBoot}.
+
+Spring y Spring Boot vienen siendo empleados en el presente proyecto desde su comienzo por cuatro factores: la facilidad con la que permite crear un servidor web para exponer la API\footnote{API. Siglas de ``interfaz de programación de aplicaciones'' (del inglés \textit{Application Programming Interface}). Es un componente \textit{software} destinado a las comunicaciones entre el sistema que la incorpora y otros sistemas que se comunican con este.} REST\footnote{REST. Siglas de ``transferencia de estado representacional'' (del inglés \textit{Representational State Transfer}). Es un estilo empleado para la transmisión de información en sistemas distribuidos.} \footnote{API REST. Es un conjunto de \textit{endpoints} que se basa en el estilo REST para intercambiar información entre un servidor y uno o más consumidores o clientes.} desarrollada, la facilidad para la gestión de las dependencias (mediante Maven) y la persistencia de la información (mediante el ORM Hibernate), la capacidad de utilizar módulos de Spring como \textit{Spring Data} o \textit{Spring Security} en el proyecto y la simplificación del despliegue del servidor (a partir del uso de Spring Boot).
+
+\subsubsection{JUnit}
+JUnit es la principal librería para la implementación y ejecución de pruebas o \textit{tests}\footnote{\textit{Test}. Es una prueba realizada sobre una pieza de \textit{software} para garantizar que su comportamiento real es congruente con el deseado.} para la verificación del \textit{software} en entornos Java \cite{Tec_JUnit}.
+Esta plataforma, que fue originalmente creada por Kent Beck y Erich Gamma, se distribuye bajo licencia Eclipse Public License y es de uso público y gratuito.
+
+JUnit permite a los desarrolladores la ejecución controlada de pruebas implementadas en código basadas en aserciones. Introduce múltiples características para dar soporte a pruebas parametrizadas y a dobles\footnote{Doble. En el ámbito de las pruebas codificadas o \textit{tests}, es una pieza de código que permite reemplazar el comportamiento de objetos de producción o dependencias en el momento de ejecutar las pruebas.}. Destaca, además, por su fácil utilización en sistemas de integración continua y en los principales entornos de desarrollo al contar con una incorporación sencilla en proyectos Java gestionados mediante Maven.
+
+\subsection{Extensión para Visual Studio Code}
+\label{subsec:tecCliente}
+La presente subsección recoge un resumen de las principales tecnologías empleadas para la generación de la extensión para Visual Studio Code que emplean los usuarios finales descargándola y ejecutándola en sus instancias locales del mencionado IDE\footnote{IDE. Siglas de ``entorno de desarrollo integrado'' (del inglés \textit{Integrated Development Environment})}.
+
+Esta extensión se basa en la utilización de la \textbf{Visual Studio Code Extension API} para su construcción. Tanto Visual Studio Code como sus extensiones hacen uso de \textbf{Node} como plataforma para la ejecución de código. Además, se hace uso de \textbf{TypeScript} para obtener un código más robusto y organizado, y de \textbf{Jest} para la ejecución de pruebas. Se desarrollan en sendas subsecciones posteriores cada una de las mencionadas tecnologías.
+
+\subsubsection{Node}
+Node.js (habitualmente denominado ``Node'') es un ``entorno de ejecución para JavaScript construido con V8\footnote{V8. Es el motor de JavaScript que utiliza el navegador Google Chrome para la ejecución de los \textit{scripts}, empleado también para la ejecución de aplicaciones de escritorio implementadas utilizando este lenguaje.}'' \cite{Tec_Node}; esto es, es una plataforma que permite la ejecución de programas basados en el lenguaje JavaScript, permitiendo construir todo tipo de \textit{software}.
+
+JavaScript es, según el índice TIOBE \cite{TIOBE}, el séptimo lenguaje de programación más empleado, con una cuota de uso cercana al 2,74\% en noviembre de 2022. Las finalidades tradicionales de este lenguaje lo ceñían a una utilización meramente enfocada en el aporte de dinamismo a las aplicaciones web ejecutadas en el navegador. Sobre esta base, Node busca abstraer la funcionalidad de este lenguaje para conducirla a la generación de aplicaciones de escritorio.
+
+Una de las principales características de Node ---y la causante principal de su creación original--- es la necesidad de trasladar el modelo de ejecución propio de la plataforma JavaScript, basado en eventos asíncronos, a la creación de aplicaciones con gran dependencia de conexiones por red avanzadas. Las grandes capacidades de Node han derivado paulatinamente en la creación de \textit{frameworks} para la generación de aplicaciones web de tipo SPA\footnote{SPA. Siglas de ``aplicación de página única'' (del inglés \textit{Single Page Application}). Típicamente, las aplicaciones web SPA son aquellas que ejecutan toda su funcionalidad en una sola página, para lo que se basan en intercambios de información en segundo plano con el servidor y modificaciones en la interfaz de usuario.} que se construyen para ser ejecutadas en el navegador y que, ya que se deben construir sobre la plataforma JavaScript, basan sus procesos de ejecución, compilación o verificación en Node. Un ejemplo es Angular, que se ha utilizado en este Trabajo Fin de Grado para generar un nuevo componente, tal como queda desarrollado en la \referenciaSeccion{subsec:tecAppWeb}.
+
+Node introduce por defecto en sus proyectos NPM (en inglés, \textit{Node Package Manager}), que es el ``registro de \textit{software} más grande del mundo, siendo empleado por desarrolladores de código abierto de todos los continentes para compartir y prestar sus paquetes'' \cite{Tec_NPM}. NPM se basa en el uso de un fichero, \textit{package.json}\footnote{JSON. Siglas de ``notación de objetos de JavaScript'' (del inglés \textit{JSON Object Notation}). Es un formato para la escritura de datos basado en la sintaxis de los objetos en el lenguaje \textit{JavaScript} muy empleado por su fácil comprensión y gran versatilidad.}, contenido en la raíz de los proyectos Node. Este fichero introduce declaraciones sobre el propio proyecto ---tales como su nombre, autoría o licencia--- y sobre las dependencias que emplea.
+En el \referenciaCodigo{cod:fragmentoPackageJSON} se observa, a título de ejemplo, un fragmento del fichero \textit{package.json} de la extensión para Visual Studio Code de \textit{VSCode4Teaching}, incluyendo el nombre, la versión y las dependencias empleadas, entre muchos otros datos.
+
+\begin{lstlisting}[language=JavaScript,caption={Fragmento del \textit{package.json} de la extensión de \textit{VSCode4Teaching}.}, label=cod:fragmentoPackageJSON]
+{
+"name": "vscode4teaching",
+"publisher": "VSCode4Teaching",
+// [...],
+"description": "Bring the programming exercises directly to the student's editor.",
+"version": "2.2.1",
+// [...],
+"dependencies": {
+    "axios": "^1.1.3",
+    "form-data": "^4.0.0",
+    // [...]
+},
+// [...]
+}
+\end{lstlisting}
+
+\subsubsection{TypeScript}
+TypeScript es ``un lenguaje fuertemente tipado que compila a JavaScript, proporcionando mejores herramientas a todos los niveles'' \cite{Tec_TS}. Ha sido creado y es actualmente mantenido por Microsoft y se divulga mediante licencia Apache de código abierto. El lenguaje TypeScript permite la utilización de tipos en ficheros de código fuente que pueden ser compilados a ficheros de código en JavaScript, siendo esta su característica más destacada y diferenciadora.
+
+La utilización de TypeScript permite, por tanto, conseguir trasladar las ventajas derivadas de la utilización de lenguajes fuertemente tipados, tales como una programación segura en cuanto a los tipos de las variables ---impidiendo errores de tipos--- al código fuente que finalmente se transpilará a código válido en JavaScript, facilitando la refactorización del código y permitiendo generar, indirectamente, una mejor documentación del código.
+
+\subsubsection{Visual Studio Code Extension API}
+Visual Studio Code es el entorno de desarrollo integrado para el que se construye la extensión de \textit{VSCode4Teaching} (ver \referenciaSeccion{subsec:edicionCodigo} al respecto). Este entorno de desarrollo tiene como uno de sus pilares esenciales la ``extensibilidad'' \cite{Tec_VSCodeExtAPI}, de modo que su funcionalidad puede ser expandida haciendo uso de extensiones disponibles a través del \textit{Marketplace} (del inglés, ``mercado'') \cite{Tec_VSCPublish}.
+
+Como consecuencia, los creadores de Visual Studio Code ponen a disposición de la comunidad de desarrolladores una API que les permite implementar, construir y publicar extensiones ejecutables dentro del editor de código, proporcionando una interfaz que hace que las extensiones tengan acceso a prácticamente la totalidad de la funcionalidad básica del IDE. Así, las extensiones pueden introducir nuevos comandos en el entorno de desarrollo, añadir la capacidad de incorporar comentarios textuales acerca del código, modificar el entorno del editor, añadir funcionalidad para la depuración de código y acceder al control de las ventanas y las áreas de trabajo activas.
+
+\subsubsection{Jest}
+Jest es una herramienta para la introducción de pruebas (\textit{tests}) en aplicaciones basadas en JavaScript que ``pone el foco en la simplicidad'' \cite{Tec_Jest}. Es una plataforma creada originalmente por Facebook, actualmente mantenida por la \textit{Open JS Foundation} y distribuida bajo licencia MIT como código abierto.
+
+En línea con otras utilidades para la realización de pruebas, introduce mecanismos como las aserciones o los dobles, ofreciendo una interfaz por línea de comandos muy sencilla de utilizar para los desarrolladores. Además, esta característica permite su fácil integración con el mecanismo de gestión de dependencias NPM.
+
+Este es el \textit{framework} de creación y ejecución de pruebas elegido para la extensión desarrollada desde el comienzo del proyecto, habiéndola escogido por la gran funcionalidad que ofrece frente a otros \textit{frameworks} y el buen soporte del que dispone a través de su documentación y su comunidad de usuarios.
+
+\subsection{Aplicación web: Angular}
+\label{subsec:tecAppWeb}
+En el contexto del trabajo abordado en el presente documento, se ha llevado a cabo la introducción de una aplicación web que actúa como cliente para la expansión de funcionalidad de \textit{VSCode4Teaching} (ver \referenciaSeccion{sec:diseñoArquitectura} al respecto).
+
+Para crear e implementar la aplicación web, se ha decidido hacer uso de \textbf{Angular}, que es un \textit{framework} de código abierto distribuido bajo licencia MIT y originalmente creado por Google que permite la creación de \textbf{aplicaciones web SPA}.
+
+Las aplicaciones web SPA o de una sola página son aquellas en las que todas las pantallas son mostradas en una misma página que modifica su contenido de forma dinámica según la interacción que realice el usuario. La utilización de las aplicaciones web SPA ha crecido en popularidad en los últimos años, ya que permite obtener una mejor experiencia de usuario al cargar una menor cantidad de recursos cada vez que este interactúa con la página, convirtiéndose en el tipo de aplicación ideal para utilidades como gestión, administración o paneles de control, entre muchos otros fines.
+
+El auge y crecimiento del uso de este tipo de aplicaciones ha potenciado la aparición de numerosos \textit{frameworks} que permiten simplificar su creación y desarrollo, tales como Vue \cite{Tec_Vue}, React \cite{Tec_React} o Angular \cite{Tec_Angular}.
+
+En el caso de este proyecto, se ha decidido utilizar Angular atendiendo fundamentalmente a dos factores: funciona sobre las mismas plataformas que la extensión para Visual Studio Code ---lenguaje TypeScript y proyecto Node---, facilitando así la curva de aprendizaje para desarrolladores de este proyecto; y es el \textit{framework} que se estudia durante el Grado en Ingeniería del \textit{Software} en la Universidad Rey Juan Carlos, facilitando así su posterior mantenimiento.
+
+\subsection{Distribución y despliegue}
+\label{subsec:tecDistribDespliegue}
+La distribución y el despliegue de \textit{VSCode4Teaching} involucran el uso de diversas tecnologías. Una de las formas disponibles más sencillas para el despliegue del servidor ---junto con la aplicación web--- es hacer uso de la configuración suministrada para la compilación de una imagen \textbf{Docker}. Las tecnologías descritas en esta sección se ven complementadas por el uso de herramientas que facilitan el despliegue, como el sistema de integración, despliegue y entrega continuas (ver \referenciaSeccion{subsec:cicd}). Se desarrolla en profundidad la información acerca del desliegue en la \referenciaSeccion{sec:distribDespliegue}.
+
+\subsubsection{Docker}
+Docker es ``una plataforma diseñada para ayudar a los desarrolladores a construir, compartir y ejecutar aplicaciones modernas'' \cite{Tec_Docker} que se basa en el uso de contenedores, que son ``unidades estandarizadas y ligeras de \textit{software} preparadas para el desarrollo y despliegue [...] que agrupan el código y todas sus dependencias para ejecutar aplicaciones rápida y fiablemente proporcionando beneficios similares a la virtualización (como, por ejemplo, el aislamiento de las aplicaciones sobre el resto del computador) pero sin sacrificar la eficiencia, ya que se ejecutan sobre un sistema operativo ---y no directamente sobre \textit{hardware}---'' \cite{Tec_DockerContainers}.
+
+Alrededor de Docker existen numerosas tecnologías con todo tipo de propósitos, siendo una de las más destacadas \textbf{Docker Compose}. Docker Compose es una ``herramienta que permite definir y ejecutar aplicaciones de Docker multicontenedor'' \cite{Tec_DockerCompose}; esto es, que requieren de la ejecución simultánea de más de un contenedor de herramientas diferentes ---por ejemplo, una aplicación Java y un servidor de bases de datos MySQL---.

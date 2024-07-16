@@ -1,0 +1,53 @@
+\section{Extracción de requisitos}
+\label{sec:requisitos}
+
+A partir de los objetivos iniciales establecidos en el \referenciaCapitulo{cap:objetivos}, se procede a extraer una lista de requisitos que especifique de forma corta, clara y concisa las tareas atómicas que se ejecutarán durante el proceso de implementación para la consecución de los citados objetivos. Estos requisitos quedan divididos en tres categorías: requisitos funcionales, no funcionales y de corrección de errores.
+Se antepone a cada uno un identificador del aspecto \texttt{RX-Y}, donde \texttt X puede ser ``F'' (para los requisitos funcionales), ``N'' (no funcionales) o ``E'' (corrección de errores); e \texttt Y es un valor numérico correlativo. Estos identificadores serán empleados durante el resto del documento para referenciar a sus requisitos asociados.
+
+Se recogen a continuación todos los requisitos que han tenido una consecución satisfactoria en el contexto del presente Trabajo Fin de Grado.
+
+\subsection{Requisitos funcionales}
+\label{subsec:listaReqsFuncionales}
+Esta categoría abarca todos los requisitos destinados a los usuarios finales; esto es, los conducentes a la mejora de la funcionalidad disponible en la aplicación y que, por tanto, se llevan a cabo mediante la introducción de nuevas funciones o el mantenimiento de capacidades previamente existentes en el \textit{software}. Estos requisitos quedan redactados como ``historias de usuario'' ---práctica extraída de eXtreme Programming (XP)--- \cite{XP_UserStories}, plasmándolos así en un formato más sencillo y fácil de entender que sitúa la necesidad del usuario final en un papel de máxima relevancia. Estos son:
+\begin{itemize}
+    \item \texttt{\textbf{RF-1}}: como profesor, quiero poder invitar a nuevos docentes para así hacer llegar \textit{VSCode4Teaching} a otros profesores.
+    \item \texttt{\textbf{RF-2}}: como profesor, quiero poder añadir ejercicios a mis cursos de forma masiva para mejorar mi eficiencia.
+    \item \texttt{\textbf{RF-3.1}}: como profesor, quiero poder visualizar de forma anónima las soluciones de los alumnos a los ejercicios para poder mostrarlas en el aula sin vulnerar el anonimato de sus autores.
+    \item \texttt{\textbf{RF-3.2}}: como profesor, quiero poder disponer de la capacidad para ocultar y mostrar los nombres de los alumnos en el \textit{dashboard} para así poder visualizarlos u ocultarlos dependiendo de la circunstancia.
+    \item \texttt{\textbf{RF-4}}: como profesor, quiero poder previsualizar el \textit{dashboard} de un ejercicio que no tenga actualmente descargado para poder tener una mayor información sobre los diversos ejercicios disponibles de forma sencilla.
+    \item \texttt{\textbf{RF-5}}: como profesor, quiero poder adjuntar propuestas de solución de elaboración propia a cada uno de los ejercicios disponibles en mis cursos.
+    \item \texttt{\textbf{RF-6}}: como profesor, quiero poder controlar cuándo las soluciones propuestas están disponibles para los estudiantes y si pueden o no modificar los ejercicios nuevamente una vez accedan a la solución.
+    \item \texttt{\textbf{RF-7.1}}: como alumno, quiero poder descargar la solución propuesta por el profesor para los ejercicios realizados cuando esté disponible.
+    \item \texttt{\textbf{RF-7.2}}: como profesor, quiero que la propuesta de solución de los ejercicios se incluya junto con los ficheros de los estudiantes y la plantilla al activar o descargar un ejercicio.
+    \item \texttt{\textbf{RF-8}}: como alumno, quiero poder visualizar de forma sencilla las diferencias que existen entre la propuesta de solución del profesor (una vez descargada) y la resolución propia de un ejercicio.
+    \item \texttt{\textbf{RF-9}}: como alumno, quiero poder disponer de una mejor página de ayuda para obtener información sobre el uso de \textit{VSCode4Teaching} de forma sencilla y personalizada.
+    \item \texttt{\textbf{RF-10}}: como alumno o profesor, quiero poder tener acceso a todas las acciones ejecutables sobre un curso, además de mediante iconos, a través de un menú contextual con descripciones textuales para mayor claridad.
+    \item \texttt{\textbf{RF-11.1}}: como alumno, quiero disponer de iconos con color en la barra lateral junto a cada ejercicio para conocer información sobre el estado del mismo.
+    \item \texttt{\textbf{RF-11.2}}: como profesor, quiero disponer de iconos con color en la barra lateral junto a cada ejercicio para conocer información sobre la existencia de su solución y, en caso de haberla, sobre su disponibilidad para los estudiantes.
+    \item \texttt{\textbf{RF-12}}: como profesor, quiero disponer de un \textit{dashboard} que incluya más información sobre el ejercicio al que representa, haciendo uso de gráficos, iconos y colores para potenciar su legibilidad e intuitividad.
+\end{itemize}
+
+\subsection{Requisitos no funcionales}
+\label{subsec:listaReqsNoFuncionales}
+Esta categoría recoge los requisitos especificados para la mejora de los atributos de calidad propios del conjunto completo de componentes ---atendiendo cuestiones como la ciberseguridad o el rendimiento---, así como la introducción de mejoras para favorecer el desarrollo y la mantenibilidad de la aplicación. Son:
+\begin{itemize}
+    \item \texttt{\textbf{RN-1}}: potenciar la seguridad de la aplicación y garantizar su máxima protección frente a nuevas vulnerabilidades en materia de seguridad del \textit{software}, empleando las últimas versiones disponibles de las librerías y \textit{frameworks} asociados al proyecto.
+    \item \texttt{\textbf{RN-2}}: incorporar mejores sistemas de registro de eventos (\textit{logs}\footnote{\textit{Log}. Registro con información sobre eventos de interés ocurridos en tiempo de ejecución.}) a los componentes de la aplicación para facilitar el estudio de errores y de su flujo de funcionamiento e interconexiones.
+    \item \texttt{\textbf{RN-3}}: mejorar la generación de la imagen Docker del servidor.
+    \item \texttt{\textbf{RN-4}}: potenciar la documentación de la API REST mediante tecnologías de generación automática de documentación.
+    \item \texttt{\textbf{RN-5}}: incorprar mejoras de la calidad del código, eliminando duplicidades y código innecesario, documentando los algoritmos y procedimientos más complejos y potenciando la modularidad y la escalabilidad.
+\end{itemize}
+
+\subsection{Requisitos de corrección de errores}
+\label{subsec:listaReqsErrores}
+Se introducen en una categoría específica todos aquellos requisitos que surgen paralelamente al desarrollo o a las pruebas ejecutadas en entornos reales como consecuencia de la detección y triaje de errores descubiertos y subsanados correctamente durante el tiempo de ejecución del presente TFG. En su formulación se introducen los resultados del triaje, respondiendo a cuándo, cómo, dónde, por qué y en qué rol aparece cada uno de los \textit{bugs} listados a continuación:
+\begin{itemize}
+    \item \texttt{\textbf{RE-1}}: como profesor, cuando se pretende ordenar la tabla del \textit{dashboard} según alguna columna, el resultado de la ordenación mostrado es incorrecto.
+    \item \texttt{\textbf{RE-2}}: como profesor, cuando se añaden varios ejercicios simultáneamente, aparece un directorio intermedio, inexistente en origen, que da como resultado un formato de ejercicio subido distinto al originalmente proporcionado.
+    \item \texttt{\textbf{RE-3.1}}: como alumno, cuando se comienza un nuevo ejercicio que no había sido iniciado anteriormente, no se modifica su estado a ``en progreso'' en todos los casos, de modo que el cliente deja de funcionar correctamente y no se almacenan los cambios en el servidor.
+    \item \texttt{\textbf{RE-3.2}}: como alumno, cuando se descarga un ejercicio previamente finalizado, su estado vuelve a modificarse a ``en progreso'', de modo que se puede editar de nuevo.
+    \item \texttt{\textbf{RE-4}}: como profesor, cuando se visualiza el \textit{dashboard}, no se actualizan correctamente los tiempos de modificación de ejercicios asociados a cada alumno del curso mostrados en la tabla.
+    \item \texttt{\textbf{RE-5.1}}: como profesor, cuando se cierra sesión teniendo algún ejercicio descargado, no se elimina el botón de la barra inferior para acceder al \textit{dashboard}, pudiendo abrirlo a pesar de haber cerrado la sesión.
+    \item \texttt{\textbf{RE-5.2}}: como profesor, cuando se cierra sesión teniendo el \textit{dashboard} de algún ejercicio abierto, no se cierra la ventana correspondiente a esta pantalla con información confidencial.
+    \item \texttt{\textbf{RE-6}}: como profesor, cuando se desean subir varios ejercicios con solución de forma simultánea, el servidor no es capaz de procesar todas las peticiones ---que son emitidas desde el cliente y recibidas en el servidor de forma simultánea--- en todos los casos, de modo que se colapsa e impide ejecutar correctamente la acción.
+\end{itemize}

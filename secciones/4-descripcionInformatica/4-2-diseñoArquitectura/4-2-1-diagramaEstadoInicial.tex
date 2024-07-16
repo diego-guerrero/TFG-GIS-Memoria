@@ -1,0 +1,33 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[
+        > = latex',
+        sistema/.style = {draw, minimum height=7mm,
+                        inner sep=1mm, outer sep = 0mm}
+        ]
+
+        \node[sistema, fill={rgb,255: red,232; green,246; blue,229}] (servidor) {
+            \begin{tabular}{cc}
+                \multirow{2}{*}{\includegraphics[height=0.7cm]{imagenes/utilizadas/4-2-arquitectura/logotipos/spring.png}} & Servidor \\
+                                                                                               & \footnotesize{Spring Boot} \\
+            \end{tabular}
+        };
+        \node[sistema, below=15mm of servidor, fill={rgb,255: red,250; green,239; blue,228}] (baseDatos) {
+            \begin{tabular}{cc}
+                \multirow{2}{*}{\includegraphics[height=0.7cm]{imagenes/utilizadas/4-2-arquitectura/logotipos/mySQL.png}} & Base de datos \\
+                                                                                              & \footnotesize{MySQL} \\
+            \end{tabular}
+        };
+        \node[sistema, right=50mm of servidor, fill={rgb,255: red,215; green,243; blue,255}] (cliente) {
+            \begin{tabular}{cc}
+                \multirow{2}{*}{\includegraphics[height=0.7cm]{imagenes/utilizadas/4-2-arquitectura/logotipos/vscode.png}} & Extensión\\
+                                                                                               & \footnotesize{Visual Studio Code}\\
+            \end{tabular}
+        };
+
+        \draw[<->] (servidor) -- node[above] {\scriptsize API REST + Web Sockets} (cliente);
+        \draw[<->] (servidor) -- node[right] {\scriptsize Persistencia} (baseDatos);
+    \end{tikzpicture}
+    \caption{Fisonomía inicial de los componentes de la aplicación.}
+    \label{fig:arquitecturaInicial}
+\end{figure}
