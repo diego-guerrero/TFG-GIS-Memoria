@@ -1,0 +1,44 @@
+\subsubsection{\texttt{RN-3}: generación de imagen Docker}
+\label{subsec:rn3}
+
+Tal como queda recogido en la \referenciaSeccion{sec:distribDespliegue}, el servidor de \textit{VSCode4Teaching} está preparado para ser compilado en formato de imagen Docker, permitiendo de este modo la ejecución de instancias del servidor en forma de contenedores ligeros sobre cualquier sistema operativo, añadiendo la portabilidad a la lista de atributos de calidad del proyecto.
+
+Docker se sirve de pequeños ficheros de configuración conocidos como \textit{Dockerfile} \cite{rn3_dockerfile}, que se introducen en la raíz de los proyectos y contienen las instrucciones necesarias para, a partir del código fuente, generar la imagen divulgable e instanciable de la aplicación. En el \referenciaCodigo{cod:dockerfileAnterior} se observa la versión original del fichero \textit{Dockerfile}, que requería de la existencia previa de un artefacto JAR del servidor.
+
+Debido a la introducción de la nueva aplicación web SPA ---véase la \referenciaSeccion{sec:diseñoArquitectura}---, que queda compilada y embebida en el servidor antes de generar su imagen, y a la necesidad de poder compilar la imagen en cualquier computador sin necesidad de que tenga instalado ninguna herramienta adicional al propio Docker, se ha rediseñado y ampliado esta configuración para que la compilación se logre a partir de la ejecución de tres pasos en cascada que quedan definidos en un fichero \textit{multi-stage}\footnote{\textit{Multi-stage}. En la generación de imágenes Docker, se dice que un fichero de configuración es \textit{multi-stage} cuando requiere de la ejecución de varias fases en contenedores distintos para crear una imagen.} \cite{rn3_multistage}, tal como queda reflejado en el \referenciaCodigo{cod:dockerfileNuevo}: compilación de la aplicación Angular, compilación del servidor con la aplicación Angular compilada embebida y generación de la imagen final apta para la ejecución del JAR obtenido.
+
+\begin{lstlisting}[language=Dockerfile,caption={\textit{Dockerfile} original del proyecto.},label=cod:dockerfileAnterior]
+FROM adoptopenjdk/openjdk11:latest
+RUN apt-get update && apt-get install -y netcat && rm -rf /var/lib/apt/lists/*
+COPY ./target/vscode4teaching-server-*.jar ./app/vscode4teaching-server-*.jar
+COPY ./docker/waitDB.sh ./app/waitDB.sh
+EXPOSE 8080
+RUN ["chmod", "+x", "./app/waitDB.sh"]
+CMD ["./app/waitDB.sh"]
+\end{lstlisting}
+
+\begin{lstlisting}[language=Dockerfile,caption={\textit{Dockerfile} actualizado para introducir la compilación independiente del sistema operativo y de la aplicación web.},label=cod:dockerfileNuevo]
+# Step 1: Compilation of Angular frontend
+# It will be embedded as a static resource into Spring Boot backend
+FROM node:16.13.2 AS angular
+COPY vscode4teaching-webapp /usr/src/app
+WORKDIR /usr/src/app
+RUN ["npm", "install"]
+RUN ["npm", "run", "build"]
+# Step 2: Compilation of Maven project (generation of JAR)
+FROM maven:3.8.4-jdk-11 AS builder
+COPY vscode4teaching-server /data
+COPY --from=angular /usr/src/app/dist /data/src/main/resources/static
+WORKDIR /data
+RUN ["mvn", "clean", "package"]
+# Step 3: Generation of Docker image using the JAR previously built
+FROM adoptopenjdk/openjdk11:latest
+RUN apt-get update && apt-get install -y netcat && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /data/target/vscode4teaching-server-*.jar ./app/vscode4teaching-server-*.jar
+COPY vscode4teaching-server/docker/waitDB.sh ./app/waitDB.sh
+EXPOSE 8080
+RUN ["chmod", "+x", "./app/waitDB.sh"]
+CMD ["./app/waitDB.sh"]
+\end{lstlisting}
+
+Se introducen, además, ficheros \texttt{.dockerignore} \cite{rn3_dockerfile}, que permiten especificar adecuadamente qué ficheros pueden ser ignorados para compilar los componentes correctamente, permitiendo una rebaja en la cantidad de almacenamiento y recursos del computador empleados durante el proceso.

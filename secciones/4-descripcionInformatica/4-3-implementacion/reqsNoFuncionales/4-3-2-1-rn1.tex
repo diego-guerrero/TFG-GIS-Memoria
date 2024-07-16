@@ -1,0 +1,14 @@
+\subsubsection{\texttt{RN-1}: ciberseguridad y mantenimiento preventivo}
+\label{subsec:rn1}
+
+La ciberseguridad es la ``práctica de proteger sistemas, redes y programas de ataques digitales [...] que apuntan a acceder, modificar o destruir la información confidencial, extorsionar a los usuarios o interrumpir la continuidad del negocio'' \cite{rn1_queEsCiber}.
+
+De esta definición se extrapola el papel fundamental que la seguridad informática ocupa en el desarrollo y mantenimiento de todos los programas, generando un trabajo constante y necesario de detección y solución de problemas en materia de confidencialidad, integridad y disponibilidad ---los pilares básicos de la seguridad informática--- de las herramientas informáticas y los datos que involucran en su uso.
+
+Durante el desarrollo de este Trabajo Fin de Grado, han sido detectadas numerosas vulnerabilidades en las dependencias y \textit{frameworks} empleados para la implementación de \textit{VSCode4Teaching}, condición suficiente para la introducción de cuatro \textit{sprints} o pequeños periodos de tiempo dedicados específicamente a la actualización de estas librerías a sus últimas versiones disponibles.
+
+El servidor ha sido el más afectado por las vulnerabilidades surgidas en los últimos meses. Alrededor de este componente, que se basa en el uso del \textit{framework} Spring ---véase \referenciaSeccion{subsec:tecServidor} para más información---, han aparecido importantes vulnerabilidades. Algunas de las más destacadas han sido catalogadas en la lista \textit{Common Vulnerabilities and Exposures} (CVE\footnote{CVE. Siglas de ``vulnerabilidades y revelaciones comunes'' (del inglés \textit{Common Vulnerabilities and Exposures}). Es una de las listas de recopilación de vulnerabilidades y riesgos de seguridad más extendidas actualmente.}) \cite{rn1_cve} como: CVE-2021-44228, CVE-2021-45046, CVE-2021-45105 (noviembre-diciembre 2021, conocidas como ``Log4j'') y CVE-2022-22965 (enero 2022, conocida como ``Spring4Shell''). Como consecuencia, se ha introducido una actualización de la versión de Spring Boot a la más reciente disponible en la fecha de cierre del trabajo (2.7.5), así como de las dependencias empleadas para el funcionamiento del servidor.
+
+Asimismo, sobre la extensión para Visual Studio Code se han ejecutado actualizaciones de dependencias y \textit{frameworks} para introducir correcciones a vulnerabilidades como las identificadas como CVE-2021-3918 (noviembre 2021), CVE-2021-44906 (diciembre 2021) o CVE-2022-0155 (enero 2022), así como actualizaciones de las diversas librerías empleadas a las últimas versiones divulgadas.
+
+La aplicación web SPA también ha recibido diversas actualizaciones, aplicadas tanto a su \textit{framework} de base, Angular (actualizado a versión 14.2.11) como a alguna de sus dependencias por motivo de mejora en materia de seguridad y de rendimiento.

@@ -1,0 +1,36 @@
+\chapter{Descripción informática}
+\label{cap:descInformatica}
+Esta sección incluye información pormenorizada acerca del proceso de desarrollo informático ejecutado para la consecución de los objetivos estipulados en el \referenciaCapitulo{cap:objetivos}.
+Esta descripción se realiza siguiendo el orden típico de los procesos \textit{software}, introduciendo una enumeración de los requisitos establecidos (\referenciaSeccion{sec:requisitos}), la descripción de las modificaciones en el diseño y la arquitectura de los distintos componentes involucrados (\referenciaSeccion{sec:diseñoArquitectura}), el detalle acerca de la implementación de los requisitos introducidos (\referenciaSeccion{sec:implementacion}), la verificación del \textit{software} y de su calidad (\referenciaSeccion{sec:verificacion}) y su distribución y despliegue (\referenciaSeccion{sec:distribDespliegue}).
+
+% Sección 4.1: Requisitos.
+% Descripción detallada de las funcionalidades que tendría que implementar la aplicación (pues se asume que los
+% requisitos se escriben antes de empezar el desarrollo). Pueden tener forma de historias de usuario o bien ser una
+% lista de requisitos funcionales y no funcionales.
+\input{secciones/4-descripcionInformatica/4-1-requisitos.tex}
+
+% Sección 4.2: Arquitectura y Análisis.
+% Descripción de los aspectos de alto nivel de la aplicación.
+% Diagramas de clases de análisis, diagramas de clases de diseño, etc.
+% Se debe incluir la suficiente información para que el lector pueda entender la estructura de alto nivel del
+% software desarrollado. Se pueden incluir diagramas de casos de uso si se considera útil.
+\input{secciones/4-descripcionInformatica/4-2-diseñoArquitectura.tex}
+
+% Sección 4.3: Diseño e implementación.
+% Descripción de algún aspecto relevante de la implementación que quiera mencionarse.
+% Por ejemplo se podría incluir alguno de los siguientes aspectos: algoritmo complejo que se haya tenido que
+% desarrollar, integración entre librerías problemática, resolución de algún bug que haya sido especialmente
+% problemático o ocalizar en alguna parte del desarrollo y describirla en más detalle.
+% En esta sección se pueden incluir fragmentos de código fuente.
+% En este apartado se pueden incluir algunas métricas del proyecto (No de clases, líneas de código, etc...).
+% También se puede incluir la evolución del repositorio de github (gráfico de commits por día).
+\input{secciones/4-descripcionInformatica/4-3-implementacion.tex}
+
+% Sección 4.4: Pruebas
+%  En esta sección se describen las pruebas automáticas que han sido implementadas para el proyecto. Sobre los tests,
+%  conviene indicar la cobertura del código. Si no se han implementado pruebas automáticas, deberían haberse
+%  implementado y describirse aquí o tener una buena justificación de por qué no se han implementado.
+\input{secciones/4-descripcionInformatica/4-4-pruebas.tex}
+
+% Sección 4.5: Distribución y despliegue
+\input{secciones/4-descripcionInformatica/4-5-distribDespliegue.tex}

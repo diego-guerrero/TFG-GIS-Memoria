@@ -1,0 +1,13 @@
+\subsubsection{\texttt{RF-5}: guardado de soluciones de ejercicios}
+\label{subsec:rf5}
+
+Uno de los objetivos principales fijados para la evolución del proyecto \textit{VSCode4Teaching} es, tal como queda reflejado en el tercer punto del \referenciaCapitulo{cap:objetivos}, permitir al profesorado adjuntar a los ejercicios su propia propuesta de resolución, que sería accesible a los estudiantes una vez fuese publicada. Este requisito, junto con los requerimientos \texttt{RF-6}, \texttt{RF-7} y \texttt{RF-8} ---desarrollados en sendos apartados posteriores---, da cumplimiento al citado objetivo.
+
+Con anterioridad a la implementación de este requisito, la aplicación permitía a los docentes añadir nuevos ejercicios ---tanto de uno en uno como de forma múltiple---, adjuntando a cada uno su correspondiente plantilla. Una vez implementado, se requiere a los usuarios que proporcionen un directorio por cada ejercicio y, si desean introducir solución asociada, que este contenga únicamente dos carpetas en su interior: ``template'', que recoja todos los contenidos relativos a la plantilla del ejercicio; y ``solution'', que albergue la totalidad de la propuesta de solución que se ha de adjuntar al nuevo ejercicio. Todas las estructuras distintas a la anteriormente descrita se interpretarán como plantillas incluidas para ejercicios sin solución adjunta.
+
+La implementación de la posibilidad de incluir una solución ha tomado como base la capacidad anteriormente existente para albergar plantillas, conllevando las siguientes alteraciones:
+\begin{itemize}
+    \item Se ha modificado el modelo de dominio asociado a los ejercicios en el servidor para introducir la persistencia en base de datos de la información relativa a la solución siguiendo el modelo empleado para las plantillas. Asimismo, se han modificado los modelos de dominio asociados a los ejercicios en el servidor y en el cliente para introducir un valor \textit{booleano}\footnote{Booleano. También conocido como binario, es un tipo de dato que permite albergar únicamente dos posibles valores: verdadero o falso.} que almacena si un ejercicio tiene o no solución (independientemente de su disponibilidad).
+    \item Se ha aprovechado el código existente para la subida de plantillas y de propuestas de estudiantes al servidor para, unificando procedimientos y eliminando bloques de código repetidos, añadir un nuevo \textit{endpoint} a la API REST para la subida de las soluciones.
+    \item Se ha implementado un algoritmo en la extensión que, dado un directorio, se basa en la exploración de los contenidos de la ruta local proporcionada para determinar si la estructura de ficheros que contiene es la requerida para incluir solución o no en el momento de subir el ejercicio.
+\end{itemize}
